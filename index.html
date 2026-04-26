@@ -127,8 +127,13 @@
     }
 
     .big-emoji {
-      font-size: 48px;
+      font-size: 52px;
       margin: 8px 0;
+    }
+
+    .score-list p {
+      margin: 4px 0;
+      font-size: 14px;
     }
 
     footer {
@@ -160,6 +165,7 @@
 const questions = [
   {
     text: "ともだちと意見がちがったとき、どうする？",
+    category: "bridge",
     options: [
       { text: "🔥 すぐに言い返す", score: 1 },
       { text: "🤔 ちょっと考えてから話す", score: 3 },
@@ -168,6 +174,7 @@ const questions = [
   },
   {
     text: "イライラしたとき、どうしてる？",
+    category: "mirror",
     options: [
       { text: "💥 すぐに言葉や態度に出る", score: 1 },
       { text: "😮‍💨 少し時間をおく", score: 3 },
@@ -176,6 +183,7 @@ const questions = [
   },
   {
     text: "ともだちがきついことを言ったとき、どう思う？",
+    category: "bridge",
     options: [
       { text: "😡 ひどい！と思って言い返す", score: 1 },
       { text: "😕 何かあったのかな？と少し考える", score: 3 },
@@ -184,6 +192,7 @@ const questions = [
   },
   {
     text: "うまくいかなかったとき、どう考える？",
+    category: "compass",
     options: [
       { text: "😢 自分はダメだと思う", score: 1 },
       { text: "🔍 どこがむずかしかったか考える", score: 3 },
@@ -192,6 +201,7 @@ const questions = [
   },
   {
     text: "自分の考えがまちがっていたと気づいたら？",
+    category: "compass",
     options: [
       { text: "🙈 みとめたくない", score: 1 },
       { text: "😅 ちょっとはずかしいけど考える", score: 3 },
@@ -200,6 +210,7 @@ const questions = [
   },
   {
     text: "しっぱいしたとき、どうする？",
+    category: "spark",
     options: [
       { text: "🌀 もうやりたくないと思う", score: 1 },
       { text: "🛠️ 何を変えればいいか考える", score: 3 },
@@ -208,6 +219,7 @@ const questions = [
   },
   {
     text: "話しているとき、勝とうとしてることある？",
+    category: "mirror",
     options: [
       { text: "🏆 勝ちたいと思うことが多い", score: 1 },
       { text: "⚖️ ときどき気づく", score: 3 },
@@ -216,6 +228,7 @@ const questions = [
   },
   {
     text: "つよい言い方をしそうなとき、どうする？",
+    category: "bridge",
     options: [
       { text: "📢 そのまま言う", score: 1 },
       { text: "🧊 少しだけ言い方を弱くする", score: 3 },
@@ -224,6 +237,7 @@ const questions = [
   },
   {
     text: "気持ちがごちゃごちゃしたとき、どうする？",
+    category: "mirror",
     options: [
       { text: "🌪️ そのままモヤモヤする", score: 1 },
       { text: "📝 少しメモしてみる", score: 3 },
@@ -232,6 +246,7 @@ const questions = [
   },
   {
     text: "うまく伝わらなかったとき、どうする？",
+    category: "spark",
     options: [
       { text: "😤 相手がわかってくれないと思う", score: 1 },
       { text: "🔁 もう一回ちがう言い方をする", score: 3 },
@@ -240,6 +255,7 @@ const questions = [
   },
   {
     text: "ふあんになったとき、どう考える？",
+    category: "compass",
     options: [
       { text: "☁️ いやな想像でいっぱいになる", score: 1 },
       { text: "📌 本当に起きていることを考える", score: 3 },
@@ -248,6 +264,7 @@ const questions = [
   },
   {
     text: "世界をよくしたいと思ったとき、どうする？",
+    category: "spark",
     options: [
       { text: "🌍 大きすぎて何もできないと思う", score: 1 },
       { text: "👣 できることをひとつ考える", score: 3 },
@@ -255,6 +272,73 @@ const questions = [
     ]
   }
 ];
+
+const resultData = {
+  compass: {
+    emoji: "🧭",
+    name: "コンパス型",
+    level1: {
+      title: "コンパスの芽",
+      message: "あなたは今、考える力を育てているところ。うまくいかない時も、「次はどうする？」と考えられると強くなります。"
+    },
+    level2: {
+      title: "コンパスの使い手",
+      message: "あなたは、迷ったときに立ち止まって考えられる人。正解を急がず、よりよい方向を探す力があります。"
+    },
+    level3: {
+      title: "コンパスマスター",
+      message: "あなたは、物事を広く見て、次の一歩を考えられる人。まわりが迷ったとき、道しるべになれる力があります。"
+    }
+  },
+  mirror: {
+    emoji: "🪞",
+    name: "ミラー型",
+    level1: {
+      title: "ミラーの芽",
+      message: "あなたは今、自分の気持ちに気づく力を育てているところ。まずは「今どんな気持ち？」と聞いてみよう。"
+    },
+    level2: {
+      title: "ミラーの使い手",
+      message: "あなたは、自分の気持ちを見つめる力があります。イライラや不安の奥にある本音に気づける人です。"
+    },
+    level3: {
+      title: "ミラーマスター",
+      message: "あなたは、自分の心を深く見つめられる人。感情に流されず、気持ちを言葉にする力があります。"
+    }
+  },
+  bridge: {
+    emoji: "🌉",
+    name: "ブリッジ型",
+    level1: {
+      title: "ブリッジの芽",
+      message: "あなたは今、人とつながる力を育てているところ。まずは相手の話を最後まで聞くところから始めよう。"
+    },
+    level2: {
+      title: "ブリッジの使い手",
+      message: "あなたは、人との関係を大事にできる人。相手の気持ちを想像しながら話せる力があります。"
+    },
+    level3: {
+      title: "ブリッジマスター",
+      message: "あなたは、人と人の間に橋をかけられる人。ちがう考えをつなげる力があります。"
+    }
+  },
+  spark: {
+    emoji: "🔥",
+    name: "スパーク型",
+    level1: {
+      title: "スパークの芽",
+      message: "あなたは今、行動する力を育てているところ。小さくやってみるだけでも、次の変化につながります。"
+    },
+    level2: {
+      title: "スパークの使い手",
+      message: "あなたは、気づいたことを行動に変えられる人。思っただけで終わらせない力があります。"
+    },
+    level3: {
+      title: "スパークマスター",
+      message: "あなたは、まわりにきっかけを作れる人。あなたの一歩が、誰かの一歩につながる力があります。"
+    }
+  }
+};
 
 const actionStarts = [
   "今日は",
@@ -283,6 +367,15 @@ const actionEnds = [
   "変えてみよう"
 ];
 
+let current = 0;
+let total = 0;
+let scores = {
+  compass: 0,
+  mirror: 0,
+  bridge: 0,
+  spark: 0
+};
+
 function generateAction() {
   const start = actionStarts[Math.floor(Math.random() * actionStarts.length)];
   const middle = actionMiddles[Math.floor(Math.random() * actionMiddles.length)];
@@ -290,12 +383,15 @@ function generateAction() {
   return `${start}、${middle}${end}`;
 }
 
-let current = 0;
-let total = 0;
-
 function start() {
   current = 0;
   total = 0;
+  scores = {
+    compass: 0,
+    mirror: 0,
+    bridge: 0,
+    spark: 0
+  };
   showQuestion();
 }
 
@@ -321,6 +417,8 @@ function showQuestion() {
 }
 
 function answer(score) {
+  const category = questions[current].category;
+  scores[category] += score;
   total += score;
   current++;
 
@@ -331,34 +429,37 @@ function answer(score) {
   }
 }
 
-function showResult() {
-  let type = "";
-  let msg = "";
-  let emoji = "";
+function getTopCategory() {
+  let top = "compass";
+  const order = ["compass", "mirror", "bridge", "spark"];
 
-  if (total >= 50) {
-    type = "コンパス型";
-    emoji = "🧭";
-    msg = "あなたは、考えてから動ける人。まわりに流されず、よい方向を探す力があります。";
-  } else if (total >= 38) {
-    type = "ミラー型";
-    emoji = "🪞";
-    msg = "あなたは、自分の気持ちに気づける人。心の中を見つめる力があります。";
-  } else if (total >= 26) {
-    type = "ブリッジ型";
-    emoji = "🌉";
-    msg = "あなたは、人と人をつなげる力を持っている人。相手の気持ちを考える力があります。";
-  } else {
-    type = "スパーク型";
-    emoji = "🔥";
-    msg = "あなたは、すぐ動ける力を持っている人。元気な力を、やさしい方向に使うともっと伝わります。";
+  for (const category of order) {
+    if (scores[category] > scores[top]) {
+      top = category;
+    }
   }
 
+  return top;
+}
+
+function getLevel(categoryScore) {
+  if (categoryScore >= 13) return "level3";
+  if (categoryScore >= 9) return "level2";
+  return "level1";
+}
+
+function showResult() {
+  const topCategory = getTopCategory();
+  const level = getLevel(scores[topCategory]);
+  const data = resultData[topCategory];
+  const result = data[level];
   const randomAction = generateAction();
+
+  const fullType = `${data.name}｜${result.title}`;
 
   const shareText = encodeURIComponent(
     `What’s AIQやってみた結果👇
-私は「${type}」でした ${emoji}
+私は「${fullType}」でした ${data.emoji}
 
 あなたはどのタイプ？
 
@@ -371,10 +472,18 @@ function showResult() {
     <div class="progress"><div class="bar" style="width:100%"></div></div>
 
     <div class="result">
-      <div class="big-emoji">${emoji}</div>
-      <h2>あなたは ${type}</h2>
-      <p>${msg}</p>
+      <div class="big-emoji">${data.emoji}</div>
+      <h2>あなたは<br>${fullType}</h2>
+      <p>${result.message}</p>
       <p class="small">スコア：${total} / 60</p>
+    </div>
+
+    <div class="result score-list">
+      <h3>4つの力</h3>
+      <p>🧭 コンパス：${scores.compass} / 15</p>
+      <p>🪞 ミラー：${scores.mirror} / 15</p>
+      <p>🌉 ブリッジ：${scores.bridge} / 15</p>
+      <p>🔥 スパーク：${scores.spark} / 15</p>
     </div>
 
     <div class="result">
