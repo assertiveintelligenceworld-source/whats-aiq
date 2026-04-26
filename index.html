@@ -4,21 +4,140 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>What’s AIQ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px;
+      line-height: 1.8;
+      background: #fafafa;
+      color: #222;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .card {
+      background: white;
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 12px;
+      background: #222;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #eee;
+      color: #222;
+    }
+
+    .small {
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
-  <h1>What’s AIQ</h1>
-  <p>あなたを評価するものではありません。</p>
-  <p>今のあなたの「問い方・受け止め方・対話のクセ」を映す小さな鏡です。</p>
+  <div class="card">
+    <h1>What’s AIQ</h1>
+    <p>あなたを評価するものではありません。</p>
+    <p>今のあなたの「問い方・受け止め方・対話のクセ」を映す小さな鏡です。</p>
 
-  <hr>
+    <div id="app"></div>
+  </div>
 
-  <h2>Q1</h2>
-  <p>自分と違う意見を聞いたとき、すぐ否定せず一度置いて考えられる。</p>
+  <script>
+    const questions = [
+      "自分と違う意見を聞いたとき、すぐ否定せず一度置いて考えられる。",
+      "怒りを感じたとき、「何に傷ついたのか」を考えられる。",
+      "相手の言葉の裏にある不安や願いを想像できる。",
+      "正しいか間違いかだけでなく、第三の見方を探せる。",
+      "自分の考えが変わることを、負けだと思わない。"
+    ];
 
-  <button>かなり当てはまる</button><br><br>
-  <button>少し当てはまる</button><br><br>
-  <button>どちらともいえない</button><br><br>
-  <button>あまり当てはまらない</button><br><br>
-  <button>当てはまらない</button>
+    const answers = [
+      { text: "かなり当てはまる", score: 5 },
+      { text: "少し当てはまる", score: 4 },
+      { text: "どちらともいえない", score: 3 },
+      { text: "あまり当てはまらない", score: 2 },
+      { text: "当てはまらない", score: 1 }
+    ];
+
+    let currentQuestion = 0;
+    let totalScore = 0;
+
+    function showQuestion() {
+      const app = document.getElementById("app");
+      app.innerHTML = `
+        <p class="small">質問 ${currentQuestion + 1} / ${questions.length}</p>
+        <h2>Q${currentQuestion + 1}</h2>
+        <p>${questions[currentQuestion]}</p>
+        ${answers.map(answer => `
+          <button onclick="answerQuestion(${answer.score})">${answer.text}</button>
+        `).join("")}
+      `;
+    }
+
+    function answerQuestion(score) {
+      totalScore += score;
+      currentQuestion++;
+
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const app = document.getElementById("app");
+      let type = "";
+      let message = "";
+
+      if (totalScore >= 22) {
+        type = "コンパス型";
+        message = "あなたは、より良い問いを探す力が高い状態です。正解を急がず、方向を見つける力があります。";
+      } else if (totalScore >= 17) {
+        type = "ミラー型";
+        message = "あなたは、自分の内面を見つめる力があります。感情や違和感を観察することで、対話の質が上がります。";
+      } else if (totalScore >= 12) {
+        type = "ブリッジ型";
+        message = "あなたは、人と人の間に橋をかける可能性があります。まずは相手の背景を想像するところから始めると良さそうです。";
+      } else {
+        type = "スパーク型";
+        message = "あなたには、変化の火種があります。勢いが強いときほど、一呼吸置くことで力が伝わりやすくなります。";
+      }
+
+      app.innerHTML = `
+        <h2>あなたのAIQタイプ</h2>
+        <h3>${type}</h3>
+        <p>${message}</p>
+        <h3>今日の一歩</h3>
+        <p>正しさより、伝わり方を一つだけ意識してみましょう。</p>
+        <button onclick="restart()">もう一度やる</button>
+      `;
+    }
+
+    function restart() {
+      currentQuestion = 0;
+      totalScore = 0;
+      showQuestion();
+    }
+
+    showQuestion();
+  </script>
 </body>
 </html>
