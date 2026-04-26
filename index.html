@@ -256,6 +256,40 @@ const questions = [
   }
 ];
 
+const actionStarts = [
+  "今日は",
+  "まずは",
+  "ちょっとだけ",
+  "試しに",
+  "今このあと",
+  "次の会話で"
+];
+
+const actionMiddles = [
+  "だれかの話を",
+  "自分の気持ちを",
+  "ちがう考えを",
+  "言い方を",
+  "反応する前に",
+  "伝え方を"
+];
+
+const actionEnds = [
+  "さいごまで聞いてみよう",
+  "ひとつ書いてみよう",
+  "想像してみよう",
+  "やさしくしてみよう",
+  "3秒待ってみよう",
+  "変えてみよう"
+];
+
+function generateAction() {
+  const start = actionStarts[Math.floor(Math.random() * actionStarts.length)];
+  const middle = actionMiddles[Math.floor(Math.random() * actionMiddles.length)];
+  const end = actionEnds[Math.floor(Math.random() * actionEnds.length)];
+  return `${start}、${middle}${end}`;
+}
+
 let current = 0;
 let total = 0;
 
@@ -301,33 +335,36 @@ function showResult() {
   let type = "";
   let msg = "";
   let emoji = "";
-  let action = "";
 
   if (total >= 50) {
     type = "コンパス型";
     emoji = "🧭";
     msg = "あなたは、考えてから動ける人。まわりに流されず、よい方向を探す力があります。";
-    action = "今日の一歩：だれかの話を聞いたあと、「それってどういうこと？」とやさしく聞いてみよう。";
   } else if (total >= 38) {
     type = "ミラー型";
     emoji = "🪞";
     msg = "あなたは、自分の気持ちに気づける人。心の中を見つめる力があります。";
-    action = "今日の一歩：今日うれしかったこと、いやだったことをひとつ書いてみよう。";
   } else if (total >= 26) {
     type = "ブリッジ型";
     emoji = "🌉";
     msg = "あなたは、人と人をつなげる力を持っている人。相手の気持ちを考える力があります。";
-    action = "今日の一歩：近くの人に「ありがとう」をひとつ伝えてみよう。";
   } else {
     type = "スパーク型";
     emoji = "🔥";
     msg = "あなたは、すぐ動ける力を持っている人。元気な力を、やさしい方向に使うともっと伝わります。";
-    action = "今日の一歩：言い返したくなったら、3秒だけ待ってみよう。";
   }
 
+  const randomAction = generateAction();
+
   const shareText = encodeURIComponent(
-    `What’s AIQをやってみた！私は「${type}」でした。問い方が変わると、世界の見え方が変わる。`
+    `What’s AIQやってみた結果👇
+私は「${type}」でした ${emoji}
+
+あなたはどのタイプ？
+
+問い方が変わると、世界の見え方が変わる。`
   );
+
   const url = encodeURIComponent(window.location.href);
 
   document.getElementById("app").innerHTML = `
@@ -342,7 +379,7 @@ function showResult() {
 
     <div class="result">
       <h3>今日の一歩</h3>
-      <p>${action}</p>
+      <p>${randomAction}</p>
     </div>
 
     <button onclick="start()">🔁 もう一回やる</button>
