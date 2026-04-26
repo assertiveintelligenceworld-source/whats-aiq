@@ -27,59 +27,13 @@
       margin-top: 20px;
     }
 
-    .badge {
-      display: inline-block;
-      background: #ffedd5;
-      color: #9a3412;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
+    h1 { font-size: 34px; margin-bottom: 10px; }
+    h2 { font-size: 24px; }
+    h3 { font-size: 22px; }
 
-    h1 {
-      font-size: 34px;
-      margin: 0 0 8px;
-      line-height: 1.2;
-    }
+    p { line-height: 1.8; }
 
-    h2 {
-      font-size: 24px;
-      margin-top: 18px;
-      line-height: 1.5;
-    }
-
-    h3 {
-      font-size: 26px;
-      margin: 10px 0;
-    }
-
-    p {
-      line-height: 1.8;
-      font-size: 16px;
-    }
-
-    .small {
-      font-size: 14px;
-      color: #666;
-    }
-
-    .progress {
-      height: 12px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      margin: 14px 0 22px;
-      overflow: hidden;
-    }
-
-    .bar {
-      height: 100%;
-      background: linear-gradient(90deg, #f97316, #22c55e);
-      width: 0%;
-      border-radius: 999px;
-      transition: width 0.3s;
-    }
+    .small { font-size: 14px; color: #666; }
 
     button {
       width: 100%;
@@ -92,55 +46,19 @@
       background: #111827;
       color: white;
       cursor: pointer;
-      box-shadow: 0 5px 0 #374151;
-    }
-
-    button:active {
-      transform: translateY(3px);
-      box-shadow: 0 2px 0 #374151;
     }
 
     .choice {
-      background: #ffffff;
+      background: #fff;
       color: #222;
       border: 2px solid #e5e7eb;
-      box-shadow: 0 5px 0 #d1d5db;
-      text-align: left;
-    }
-
-    .choice:hover {
-      background: #fef3c7;
-    }
-
-    .secondary {
-      background: #f1f5f9;
-      color: #222;
-      box-shadow: 0 5px 0 #cbd5e1;
     }
 
     .result {
       background: #f8fafc;
-      border-radius: 22px;
-      padding: 20px;
-      margin: 16px 0;
-      border: 2px solid #e5e7eb;
-    }
-
-    .big-emoji {
-      font-size: 52px;
-      margin: 8px 0;
-    }
-
-    .score-list p {
-      margin: 4px 0;
-      font-size: 14px;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: #555;
-      margin: 18px 0;
+      border-radius: 20px;
+      padding: 18px;
+      margin: 14px 0;
     }
   </style>
 </head>
@@ -148,361 +66,160 @@
 <body>
 <div class="container">
   <div class="card">
-    <span class="badge">🌱 5分でできる</span>
     <h1>What’s AIQ</h1>
     <p>これはテストではありません。</p>
-    <p>あなたの「考え方のくせ」を見つける、小さなあそびです。</p>
+    <p>今の「考え方のくせ」を見つけるためのものです。</p>
 
     <div id="app"></div>
   </div>
-
-  <footer>
-    問い方が変わると、世界の見え方が変わる。
-  </footer>
 </div>
 
 <script>
 const questions = [
-  {
-    text: "ともだちと意見がちがったとき、どうする？",
-    category: "bridge",
-    options: [
-      { text: "🔥 すぐに言い返す", score: 1 },
-      { text: "🤔 ちょっと考えてから話す", score: 3 },
-      { text: "👂 まず相手の話をさいごまで聞く", score: 5 }
-    ]
-  },
-  {
-    text: "イライラしたとき、どうしてる？",
-    category: "mirror",
-    options: [
-      { text: "💥 すぐに言葉や態度に出る", score: 1 },
-      { text: "😮‍💨 少し時間をおく", score: 3 },
-      { text: "🪞 なんでイライラしたのか考える", score: 5 }
-    ]
-  },
-  {
-    text: "ともだちがきついことを言ったとき、どう思う？",
-    category: "bridge",
-    options: [
-      { text: "😡 ひどい！と思って言い返す", score: 1 },
-      { text: "😕 何かあったのかな？と少し考える", score: 3 },
-      { text: "🌉 本当は何を伝えたいのか考える", score: 5 }
-    ]
-  },
-  {
-    text: "うまくいかなかったとき、どう考える？",
-    category: "compass",
-    options: [
-      { text: "😢 自分はダメだと思う", score: 1 },
-      { text: "🔍 どこがむずかしかったか考える", score: 3 },
-      { text: "🧭 次はどうすればいいか考える", score: 5 }
-    ]
-  },
-  {
-    text: "自分の考えがまちがっていたと気づいたら？",
-    category: "compass",
-    options: [
-      { text: "🙈 みとめたくない", score: 1 },
-      { text: "😅 ちょっとはずかしいけど考える", score: 3 },
-      { text: "✨ 気づけてよかったと思う", score: 5 }
-    ]
-  },
-  {
-    text: "しっぱいしたとき、どうする？",
-    category: "spark",
-    options: [
-      { text: "🌀 もうやりたくないと思う", score: 1 },
-      { text: "🛠️ 何を変えればいいか考える", score: 3 },
-      { text: "🚀 小さくやり直してみる", score: 5 }
-    ]
-  },
-  {
-    text: "話しているとき、勝とうとしてることある？",
-    category: "mirror",
-    options: [
-      { text: "🏆 勝ちたいと思うことが多い", score: 1 },
-      { text: "⚖️ ときどき気づく", score: 3 },
-      { text: "🤝 わかり合うことを大事にする", score: 5 }
-    ]
-  },
-  {
-    text: "つよい言い方をしそうなとき、どうする？",
-    category: "bridge",
-    options: [
-      { text: "📢 そのまま言う", score: 1 },
-      { text: "🧊 少しだけ言い方を弱くする", score: 3 },
-      { text: "🌷 伝わりやすい言葉に変える", score: 5 }
-    ]
-  },
-  {
-    text: "気持ちがごちゃごちゃしたとき、どうする？",
-    category: "mirror",
-    options: [
-      { text: "🌪️ そのままモヤモヤする", score: 1 },
-      { text: "📝 少しメモしてみる", score: 3 },
-      { text: "🪞 今の気持ちを名前にしてみる", score: 5 }
-    ]
-  },
-  {
-    text: "うまく伝わらなかったとき、どうする？",
-    category: "spark",
-    options: [
-      { text: "😤 相手がわかってくれないと思う", score: 1 },
-      { text: "🔁 もう一回ちがう言い方をする", score: 3 },
-      { text: "🎯 相手に伝わる言葉を探す", score: 5 }
-    ]
-  },
-  {
-    text: "ふあんになったとき、どう考える？",
-    category: "compass",
-    options: [
-      { text: "☁️ いやな想像でいっぱいになる", score: 1 },
-      { text: "📌 本当に起きていることを考える", score: 3 },
-      { text: "🔦 事実と想像を分けて考える", score: 5 }
-    ]
-  },
-  {
-    text: "世界をよくしたいと思ったとき、どうする？",
-    category: "spark",
-    options: [
-      { text: "🌍 大きすぎて何もできないと思う", score: 1 },
-      { text: "👣 できることをひとつ考える", score: 3 },
-      { text: "🤝 まず近くの一人を大事にする", score: 5 }
-    ]
-  }
+  { text:"ともだちと意見がちがったとき、どうする？",cat:"bridge",
+    options:[
+      {text:"🔥 すぐ言い返す",score:1},
+      {text:"🤔 ちょっと考える",score:3},
+      {text:"👂 まず聞く",score:5}
+    ]},
+  { text:"イライラしたとき？",cat:"mirror",
+    options:[
+      {text:"💥 すぐ出る",score:1},
+      {text:"😮‍💨 少し止まる",score:3},
+      {text:"🪞 理由を考える",score:5}
+    ]},
+  { text:"うまくいかないとき？",cat:"compass",
+    options:[
+      {text:"😢 落ち込む",score:1},
+      {text:"🔍 少し考える",score:3},
+      {text:"🧭 次を考える",score:5}
+    ]},
+  { text:"伝わらないとき？",cat:"spark",
+    options:[
+      {text:"😤 あきらめる",score:1},
+      {text:"🔁 言い直す",score:3},
+      {text:"🎯 工夫する",score:5}
+    ]},
+  { text:"考えがちがったら？",cat:"bridge",
+    options:[
+      {text:"🔥 反発する",score:1},
+      {text:"🤔 少し考える",score:3},
+      {text:"👂 聞いてみる",score:5}
+    ]},
+  { text:"不安なとき？",cat:"compass",
+    options:[
+      {text:"☁️ 想像する",score:1},
+      {text:"📌 現実を見る",score:3},
+      {text:"🔦 分けて考える",score:5}
+    ]},
+  { text:"しっぱいしたら？",cat:"spark",
+    options:[
+      {text:"🌀 やめる",score:1},
+      {text:"🛠️ 見直す",score:3},
+      {text:"🚀 やり直す",score:5}
+    ]},
+  { text:"強い言い方しそう？",cat:"bridge",
+    options:[
+      {text:"📢 そのまま言う",score:1},
+      {text:"🧊 弱める",score:3},
+      {text:"🌷 やさしくする",score:5}
+    ]},
+  { text:"気持ちが混乱？",cat:"mirror",
+    options:[
+      {text:"🌪️ 放置",score:1},
+      {text:"📝 書く",score:3},
+      {text:"🪞 名前つける",score:5}
+    ]},
+  { text:"勝とうとしてる？",cat:"mirror",
+    options:[
+      {text:"🏆 勝ちたい",score:1},
+      {text:"⚖️ 気づく",score:3},
+      {text:"🤝 理解したい",score:5}
+    ]},
+  { text:"世界をよくしたい？",cat:"spark",
+    options:[
+      {text:"🌍 無理",score:1},
+      {text:"👣 小さく",score:3},
+      {text:"🤝 目の前から",score:5}
+    ]},
+  { text:"考えが変わったら？",cat:"compass",
+    options:[
+      {text:"🙈 イヤ",score:1},
+      {text:"😅 迷う",score:3},
+      {text:"✨ OK",score:5}
+    ]}
 ];
 
-const resultData = {
-  compass: {
-    emoji: "🧭",
-    name: "コンパス型",
-    level1: {
-      title: "コンパスの芽",
-      message: "あなたは今、考える力を育てているところ。うまくいかない時も、「次はどうする？」と考えられると強くなります。"
-    },
-    level2: {
-      title: "コンパスの使い手",
-      message: "あなたは、迷ったときに立ち止まって考えられる人。正解を急がず、よりよい方向を探す力があります。"
-    },
-    level3: {
-      title: "コンパスマスター",
-      message: "あなたは、物事を広く見て、次の一歩を考えられる人。まわりが迷ったとき、道しるべになれる力があります。"
-    }
-  },
-  mirror: {
-    emoji: "🪞",
-    name: "ミラー型",
-    level1: {
-      title: "ミラーの芽",
-      message: "あなたは今、自分の気持ちに気づく力を育てているところ。まずは「今どんな気持ち？」と聞いてみよう。"
-    },
-    level2: {
-      title: "ミラーの使い手",
-      message: "あなたは、自分の気持ちを見つめる力があります。イライラや不安の奥にある本音に気づける人です。"
-    },
-    level3: {
-      title: "ミラーマスター",
-      message: "あなたは、自分の心を深く見つめられる人。感情に流されず、気持ちを言葉にする力があります。"
-    }
-  },
-  bridge: {
-    emoji: "🌉",
-    name: "ブリッジ型",
-    level1: {
-      title: "ブリッジの芽",
-      message: "あなたは今、人とつながる力を育てているところ。まずは相手の話を最後まで聞くところから始めよう。"
-    },
-    level2: {
-      title: "ブリッジの使い手",
-      message: "あなたは、人との関係を大事にできる人。相手の気持ちを想像しながら話せる力があります。"
-    },
-    level3: {
-      title: "ブリッジマスター",
-      message: "あなたは、人と人の間に橋をかけられる人。ちがう考えをつなげる力があります。"
-    }
-  },
-  spark: {
-    emoji: "🔥",
-    name: "スパーク型",
-    level1: {
-      title: "スパークの芽",
-      message: "あなたは今、行動する力を育てているところ。小さくやってみるだけでも、次の変化につながります。"
-    },
-    level2: {
-      title: "スパークの使い手",
-      message: "あなたは、気づいたことを行動に変えられる人。思っただけで終わらせない力があります。"
-    },
-    level3: {
-      title: "スパークマスター",
-      message: "あなたは、まわりにきっかけを作れる人。あなたの一歩が、誰かの一歩につながる力があります。"
-    }
-  }
+const data = {
+  compass:["コンパスの芽","コンパスの使い手","コンパスマスター"],
+  mirror:["ミラーの芽","ミラーの使い手","ミラーマスター"],
+  bridge:["ブリッジの芽","ブリッジの使い手","ブリッジマスター"],
+  spark:["スパークの芽","スパークの使い手","スパークマスター"]
 };
 
-const actionStarts = [
-  "今日は",
-  "まずは",
-  "ちょっとだけ",
-  "試しに",
-  "今このあと",
-  "次の会話で"
-];
+let i=0,total=0,score={compass:0,mirror:0,bridge:0,spark:0};
 
-const actionMiddles = [
-  "だれかの話を",
-  "自分の気持ちを",
-  "ちがう考えを",
-  "言い方を",
-  "反応する前に",
-  "伝え方を"
-];
-
-const actionEnds = [
-  "さいごまで聞いてみよう",
-  "ひとつ書いてみよう",
-  "想像してみよう",
-  "やさしくしてみよう",
-  "3秒待ってみよう",
-  "変えてみよう"
-];
-
-let current = 0;
-let total = 0;
-let scores = {
-  compass: 0,
-  mirror: 0,
-  bridge: 0,
-  spark: 0
-};
-
-function generateAction() {
-  const start = actionStarts[Math.floor(Math.random() * actionStarts.length)];
-  const middle = actionMiddles[Math.floor(Math.random() * actionMiddles.length)];
-  const end = actionEnds[Math.floor(Math.random() * actionEnds.length)];
-  return `${start}、${middle}${end}`;
+function start(){
+  i=0; total=0;
+  score={compass:0,mirror:0,bridge:0,spark:0};
+  showQ();
 }
 
-function start() {
-  current = 0;
-  total = 0;
-  scores = {
-    compass: 0,
-    mirror: 0,
-    bridge: 0,
-    spark: 0
-  };
-  showQuestion();
-}
-
-function showStart() {
-  document.getElementById("app").innerHTML = `
-    <button onclick="start()">▶ はじめる</button>
-    <p class="small">名前やメールアドレスはいりません。</p>
-  `;
-}
-
-function showQuestion() {
-  const q = questions[current];
-  const progress = (current / questions.length) * 100;
-
-  document.getElementById("app").innerHTML = `
-    <div class="progress"><div class="bar" style="width:${progress}%"></div></div>
-    <p class="small">質問 ${current + 1} / ${questions.length}</p>
+function showQ(){
+  const q=questions[i];
+  document.getElementById("app").innerHTML=`
+    <p>${i+1}/12</p>
     <h2>${q.text}</h2>
-    ${q.options.map(o => `
-      <button class="choice" onclick="answer(${o.score})">${o.text}</button>
+    ${q.options.map(o=>`
+      <button class="choice" onclick="ans(${o.score})">${o.text}</button>
     `).join("")}
   `;
 }
 
-function answer(score) {
-  const category = questions[current].category;
-  scores[category] += score;
-  total += score;
-  current++;
-
-  if (current < questions.length) {
-    showQuestion();
-  } else {
-    showResult();
-  }
+function ans(s){
+  score[questions[i].cat]+=s;
+  total+=s; i++;
+  if(i<12){showQ()}else{result()}
 }
 
-function getTopCategory() {
-  let top = "compass";
-  const order = ["compass", "mirror", "bridge", "spark"];
+function result(){
+  let top="compass";
+  for(let k in score){if(score[k]>score[top])top=k;}
+  let lv= score[top]>=13?2:score[top]>=9?1:0;
 
-  for (const category of order) {
-    if (scores[category] > scores[top]) {
-      top = category;
-    }
-  }
+  const actionList=[
+    "今日は、だれかの話を最後まで聞いてみよう",
+    "今日は、自分の気持ちを1つ書いてみよう",
+    "今日は、少しだけ言い方をやさしくしてみよう",
+    "今日は、すぐ反応せず3秒待ってみよう"
+  ];
+  const action=actionList[Math.floor(Math.random()*actionList.length)];
 
-  return top;
-}
-
-function getLevel(categoryScore) {
-  if (categoryScore >= 13) return "level3";
-  if (categoryScore >= 9) return "level2";
-  return "level1";
-}
-
-function showResult() {
-  const topCategory = getTopCategory();
-  const level = getLevel(scores[topCategory]);
-  const data = resultData[topCategory];
-  const result = data[level];
-  const randomAction = generateAction();
-
-  const fullType = `${data.name}｜${result.title}`;
-
-  const shareText = encodeURIComponent(
-    `What’s AIQやってみた結果👇
-私は「${fullType}」でした ${data.emoji}
-
-あなたはどのタイプ？
-
-問い方が変わると、世界の見え方が変わる。`
-  );
-
-  const url = encodeURIComponent(window.location.href);
-
-  document.getElementById("app").innerHTML = `
-    <div class="progress"><div class="bar" style="width:100%"></div></div>
-
+  document.getElementById("app").innerHTML=`
     <div class="result">
-      <div class="big-emoji">${data.emoji}</div>
-      <h2>あなたは<br>${fullType}</h2>
-      <p>${result.message}</p>
-      <p class="small">スコア：${total} / 60</p>
+      <h2>${top}型｜${data[top][lv]}</h2>
+      <p>スコア ${total}/60</p>
     </div>
 
-    <div class="result score-list">
-      <h3>4つの力</h3>
-      <p>🧭 コンパス：${scores.compass} / 15</p>
-      <p>🪞 ミラー：${scores.mirror} / 15</p>
-      <p>🌉 ブリッジ：${scores.bridge} / 15</p>
-      <p>🔥 スパーク：${scores.spark} / 15</p>
-    </div>
+    <p class="small">これは今のあなたの状態です。</p>
+    <p class="small">変わってOKです。</p>
 
     <div class="result">
       <h3>今日の一歩</h3>
-      <p>${randomAction}</p>
+      <p>${action}</p>
     </div>
 
-    <button onclick="start()">🔁 もう一回やる</button>
-    <button class="secondary" onclick="window.open('https://twitter.com/intent/tweet?text=${shareText}&url=${url}', '_blank')">📣 Xでシェアする</button>
-    <button class="secondary" onclick="copyLink()">🔗 リンクをコピー</button>
+    <div class="result">
+      <h3>ひとつ考えてみよう</h3>
+      <p>次に同じ場面が来たらどうする？</p>
+    </div>
+
+    <button onclick="start()">もう一回やる</button>
   `;
 }
 
-function copyLink() {
-  navigator.clipboard.writeText(window.location.href);
-  alert("リンクをコピーしました！");
-}
-
-showStart();
+document.getElementById("app").innerHTML=
+`<button onclick="start()">はじめる</button>`;
 </script>
 </body>
 </html>
