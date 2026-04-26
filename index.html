@@ -1,225 +1,159 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>What’s AIQ</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What’s AIQ</title>
 
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      margin: 0;
-      background: linear-gradient(180deg, #fff7d6, #e0f2fe);
-      color: #222;
-    }
-
-    .container {
-      max-width: 640px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 28px;
-      padding: 26px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-      margin-top: 20px;
-    }
-
-    h1 { font-size: 34px; margin-bottom: 10px; }
-    h2 { font-size: 24px; }
-    h3 { font-size: 22px; }
-
-    p { line-height: 1.8; }
-
-    .small { font-size: 14px; color: #666; }
-
-    button {
-      width: 100%;
-      padding: 18px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 18px;
-      font-size: 17px;
-      font-weight: bold;
-      background: #111827;
-      color: white;
-      cursor: pointer;
-    }
-
-    .choice {
-      background: #fff;
-      color: #222;
-      border: 2px solid #e5e7eb;
-    }
-
-    .result {
-      background: #f8fafc;
-      border-radius: 20px;
-      padding: 18px;
-      margin: 14px 0;
-    }
-  </style>
+<style>
+body{
+font-family:sans-serif;
+margin:0;
+background:linear-gradient(#fff7d6,#dbeafe);
+}
+.container{max-width:640px;margin:auto;padding:20px;}
+.card{
+background:white;
+border-radius:20px;
+padding:24px;
+box-shadow:0 10px 30px rgba(0,0,0,0.1);
+text-align:center;
+}
+button{
+width:100%;
+padding:16px;
+margin:8px 0;
+border:none;
+border-radius:12px;
+font-size:16px;
+background:#111;
+color:#fff;
+}
+.choice{
+background:#fff;
+color:#222;
+border:2px solid #ddd;
+}
+.result{
+background:#f1f5f9;
+border-radius:16px;
+padding:16px;
+margin:12px 0;
+}
+.big{font-size:50px;}
+.small{font-size:13px;color:#666;}
+</style>
 </head>
 
 <body>
 <div class="container">
-  <div class="card">
-    <h1>What’s AIQ</h1>
-    <p>これはテストではありません。</p>
-    <p>今の「考え方のくせ」を見つけるためのものです。</p>
+<div class="card">
+<h1>What’s AIQ</h1>
+<p>テストじゃないよ。ちょっとした発見ゲーム。</p>
 
-    <div id="app"></div>
-  </div>
+<div id="app"></div>
+</div>
 </div>
 
 <script>
-const questions = [
-  { text:"ともだちと意見がちがったとき、どうする？",cat:"bridge",
-    options:[
-      {text:"🔥 すぐ言い返す",score:1},
-      {text:"🤔 ちょっと考える",score:3},
-      {text:"👂 まず聞く",score:5}
-    ]},
-  { text:"イライラしたとき？",cat:"mirror",
-    options:[
-      {text:"💥 すぐ出る",score:1},
-      {text:"😮‍💨 少し止まる",score:3},
-      {text:"🪞 理由を考える",score:5}
-    ]},
-  { text:"うまくいかないとき？",cat:"compass",
-    options:[
-      {text:"😢 落ち込む",score:1},
-      {text:"🔍 少し考える",score:3},
-      {text:"🧭 次を考える",score:5}
-    ]},
-  { text:"伝わらないとき？",cat:"spark",
-    options:[
-      {text:"😤 あきらめる",score:1},
-      {text:"🔁 言い直す",score:3},
-      {text:"🎯 工夫する",score:5}
-    ]},
-  { text:"考えがちがったら？",cat:"bridge",
-    options:[
-      {text:"🔥 反発する",score:1},
-      {text:"🤔 少し考える",score:3},
-      {text:"👂 聞いてみる",score:5}
-    ]},
-  { text:"不安なとき？",cat:"compass",
-    options:[
-      {text:"☁️ 想像する",score:1},
-      {text:"📌 現実を見る",score:3},
-      {text:"🔦 分けて考える",score:5}
-    ]},
-  { text:"しっぱいしたら？",cat:"spark",
-    options:[
-      {text:"🌀 やめる",score:1},
-      {text:"🛠️ 見直す",score:3},
-      {text:"🚀 やり直す",score:5}
-    ]},
-  { text:"強い言い方しそう？",cat:"bridge",
-    options:[
-      {text:"📢 そのまま言う",score:1},
-      {text:"🧊 弱める",score:3},
-      {text:"🌷 やさしくする",score:5}
-    ]},
-  { text:"気持ちが混乱？",cat:"mirror",
-    options:[
-      {text:"🌪️ 放置",score:1},
-      {text:"📝 書く",score:3},
-      {text:"🪞 名前つける",score:5}
-    ]},
-  { text:"勝とうとしてる？",cat:"mirror",
-    options:[
-      {text:"🏆 勝ちたい",score:1},
-      {text:"⚖️ 気づく",score:3},
-      {text:"🤝 理解したい",score:5}
-    ]},
-  { text:"世界をよくしたい？",cat:"spark",
-    options:[
-      {text:"🌍 無理",score:1},
-      {text:"👣 小さく",score:3},
-      {text:"🤝 目の前から",score:5}
-    ]},
-  { text:"考えが変わったら？",cat:"compass",
-    options:[
-      {text:"🙈 イヤ",score:1},
-      {text:"😅 迷う",score:3},
-      {text:"✨ OK",score:5}
-    ]}
+const questions=[
+{text:"意見がちがったら？",cat:"bridge"},
+{text:"イライラしたら？",cat:"mirror"},
+{text:"うまくいかない？",cat:"compass"},
+{text:"伝わらない？",cat:"spark"},
+{text:"考えが違う？",cat:"bridge"},
+{text:"不安なとき？",cat:"compass"},
+{text:"失敗したら？",cat:"spark"},
+{text:"強く言いそう？",cat:"bridge"},
+{text:"気持ち混乱？",cat:"mirror"},
+{text:"勝とうとしてる？",cat:"mirror"},
+{text:"世界をよく？",cat:"spark"},
+{text:"考え変わった？",cat:"compass"}
 ];
 
-const data = {
-  compass:["コンパスの芽","コンパスの使い手","コンパスマスター"],
-  mirror:["ミラーの芽","ミラーの使い手","ミラーマスター"],
-  bridge:["ブリッジの芽","ブリッジの使い手","ブリッジマスター"],
-  spark:["スパークの芽","スパークの使い手","スパークマスター"]
+const opts=[
+{text:"すぐ反応",s:1},
+{text:"ちょっと止まる",s:3},
+{text:"考えて行動",s:5}
+];
+
+const chara={
+compass:["🧭","未来を見る人"],
+mirror:["🪞","自分を見つめる人"],
+bridge:["🌉","人をつなぐ人"],
+spark:["🔥","動かす人"]
 };
+
+const qS=["次に","もう一回","少し変えるなら","同じ場面で"];
+const qM=["どうする？","どう動く？","どう伝える？"];
+
+function genQ(){
+return qS[Math.floor(Math.random()*qS.length)]+" "+qM[Math.floor(Math.random()*qM.length)];
+}
 
 let i=0,total=0,score={compass:0,mirror:0,bridge:0,spark:0};
 
 function start(){
-  i=0; total=0;
-  score={compass:0,mirror:0,bridge:0,spark:0};
-  showQ();
+i=0;total=0;
+score={compass:0,mirror:0,bridge:0,spark:0};
+showQ();
 }
 
 function showQ(){
-  const q=questions[i];
-  document.getElementById("app").innerHTML=`
-    <p>${i+1}/12</p>
-    <h2>${q.text}</h2>
-    ${q.options.map(o=>`
-      <button class="choice" onclick="ans(${o.score})">${o.text}</button>
-    `).join("")}
-  `;
+let q=questions[i];
+document.getElementById("app").innerHTML=`
+<p>${i+1}/12</p>
+<h2>${q.text}</h2>
+${opts.map(o=>`<button class="choice" onclick="ans(${o.s})">${o.text}</button>`).join("")}
+`;
 }
 
 function ans(s){
-  score[questions[i].cat]+=s;
-  total+=s; i++;
-  if(i<12){showQ()}else{result()}
+score[questions[i].cat]+=s;
+total+=s;
+i++;
+if(i<12){showQ()}else{res()}
 }
 
-function result(){
-  let top="compass";
-  for(let k in score){if(score[k]>score[top])top=k;}
-  let lv= score[top]>=13?2:score[top]>=9?1:0;
+function res(){
+let top="compass";
+for(let k in score){if(score[k]>score[top])top=k;}
 
-  const actionList=[
-    "今日は、だれかの話を最後まで聞いてみよう",
-    "今日は、自分の気持ちを1つ書いてみよう",
-    "今日は、少しだけ言い方をやさしくしてみよう",
-    "今日は、すぐ反応せず3秒待ってみよう"
-  ];
-  const action=actionList[Math.floor(Math.random()*actionList.length)];
+let emoji=chara[top][0];
+let name=chara[top][1];
 
-  document.getElementById("app").innerHTML=`
-    <div class="result">
-      <h2>${top}型｜${data[top][lv]}</h2>
-      <p>スコア ${total}/60</p>
-    </div>
+const actions=[
+"今日はだれかの話を最後まで聞いてみよう",
+"今日は少しゆっくり考えてみよう",
+"今日はやさしい言葉を使ってみよう",
+"今日は一回だけ立ち止まってみよう"
+];
 
-    <p class="small">これは今のあなたの状態です。</p>
-    <p class="small">変わってOKです。</p>
+document.getElementById("app").innerHTML=`
+<div class="result">
+<div class="big">${emoji}</div>
+<h2>${name}</h2>
+<p>今のあなたはこんな感じ</p>
+</div>
 
-    <div class="result">
-      <h3>今日の一歩</h3>
-      <p>${action}</p>
-    </div>
+<div class="result">
+<h3>今日の一歩</h3>
+<p>${actions[Math.floor(Math.random()*actions.length)]}</p>
+</div>
 
-    <div class="result">
-      <h3>ひとつ考えてみよう</h3>
-      <p>次に同じ場面が来たらどうする？</p>
-    </div>
+<div class="result">
+<h3>ちょっと考えてみよう</h3>
+<p>${genQ()}</p>
+</div>
 
-    <button onclick="start()">もう一回やる</button>
-  `;
+<p class="small">これは今の状態。変わってOK。</p>
+
+<button onclick="start()">もう一回やる</button>
+`;
 }
 
 document.getElementById("app").innerHTML=
-`<button onclick="start()">はじめる</button>`;
+`<button onclick="start()">スタート</button>`;
 </script>
 </body>
 </html>
