@@ -7,33 +7,38 @@
 
   <style>
     body {
-      font-family: sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
       background: #f4f6fb;
       color: #222;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 640px;
       margin: auto;
       padding: 20px;
     }
 
     .card {
       background: white;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 24px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.08);
     }
 
     h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
+      font-size: 30px;
+      margin-bottom: 8px;
     }
 
     h2 {
-      font-size: 20px;
+      font-size: 22px;
       margin-top: 20px;
+    }
+
+    h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
     }
 
     p {
@@ -50,23 +55,31 @@
       padding: 14px;
       margin: 8px 0;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       font-size: 16px;
       background: #222;
       color: white;
       cursor: pointer;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    button:hover {
+      opacity: 0.9;
     }
 
     button.secondary {
-      background: #eee;
+      background: #eef1f5;
       color: #222;
+      text-align: center;
     }
 
     .progress {
       height: 8px;
       background: #ddd;
       border-radius: 10px;
-      margin: 10px 0 20px;
+      margin: 14px 0 22px;
+      overflow: hidden;
     }
 
     .bar {
@@ -74,6 +87,21 @@
       background: #222;
       width: 0%;
       border-radius: 10px;
+      transition: width 0.3s;
+    }
+
+    .result-box {
+      background: #f7f8fb;
+      padding: 16px;
+      border-radius: 16px;
+      margin: 14px 0;
+    }
+
+    footer {
+      text-align: center;
+      color: #777;
+      font-size: 12px;
+      margin-top: 18px;
     }
   </style>
 </head>
@@ -83,58 +111,195 @@
   <div class="card">
     <h1>What’s AIQ</h1>
     <p>これはテストではありません。</p>
-    <p>あなたの「考え方のくせ」を知るためのものです。</p>
+    <p>あなたの「考え方・聞き方・伝え方のくせ」を知るための小さなリフレクションです。</p>
+    <p class="small">よい・悪いを決めるものではありません。今の自分を知るために使ってください。</p>
 
     <div id="app"></div>
   </div>
+
+  <footer>
+    What’s AIQ｜問い方が変わると、世界の見え方が変わる。
+  </footer>
 </div>
 
 <script>
-
 const questions = [
-  "ともだちと意見がちがったとき、どうする？",
-  "イライラしたとき、どうしてる？",
-  "ともだちがきついことを言ったとき、どう思う？",
-  "うまくいかなかったとき、どう考える？",
-  "自分の考えがまちがっていたと気づいたら？",
-  "しっぱいしたとき、どうする？",
-  "話しているとき、勝とうとしてることある？",
-  "つよい言い方をしそうなとき、どうする？",
-  "気持ちがごちゃごちゃしたとき、どうする？",
-  "うまく伝わらなかったとき、どうする？",
-  "ふあんになったとき、どう考える？",
-  "世界をよくしたいと思ったとき、どうする？"
-];
-
-const options = [
-  { text: "すぐ言い返す", score: 1 },
-  { text: "ちょっと考える", score: 3 },
-  { text: "相手の話をちゃんと聞く", score: 5 }
+  {
+    text: "ともだちと意見がちがったとき、どうする？",
+    category: "dialogue",
+    options: [
+      { text: "すぐに「ちがうよ」と言う", score: 1 },
+      { text: "少し聞くけど、自分の意見を先に言いたくなる", score: 2 },
+      { text: "相手の話を聞いてから、自分の考えを言う", score: 3 },
+      { text: "どうしてそう思ったのか聞いてみる", score: 4 },
+      { text: "相手の考えと自分の考えの両方を大事にする", score: 5 }
+    ]
+  },
+  {
+    text: "イライラしたとき、どうしてる？",
+    category: "reflection",
+    options: [
+      { text: "すぐ言葉や態度に出る", score: 1 },
+      { text: "がまんするけど、あとで爆発しそうになる", score: 2 },
+      { text: "少し時間をおいて落ち着こうとする", score: 3 },
+      { text: "なぜイライラしたのか考える", score: 4 },
+      { text: "自分の気持ちを言葉にして、落ち着いて伝えようとする", score: 5 }
+    ]
+  },
+  {
+    text: "ともだちがきついことを言ったとき、どう思う？",
+    category: "dialogue",
+    options: [
+      { text: "すぐに「ひどい」と思って言い返す", score: 1 },
+      { text: "いやな気持ちになって、相手をきらいになる", score: 2 },
+      { text: "いやだったけど、少し理由を考える", score: 3 },
+      { text: "何か困っていたのかもしれないと思う", score: 4 },
+      { text: "自分の気持ちも大事にしながら、相手の気持ちも考える", score: 5 }
+    ]
+  },
+  {
+    text: "うまくいかなかったとき、どう考える？",
+    category: "reframe",
+    options: [
+      { text: "もうダメだと思う", score: 1 },
+      { text: "自分は向いていないと思う", score: 2 },
+      { text: "次は少しやり方を変えようと思う", score: 3 },
+      { text: "何がうまくいかなかったのか考える", score: 4 },
+      { text: "失敗から学べることを見つける", score: 5 }
+    ]
+  },
+  {
+    text: "自分の考えがまちがっていたと気づいたら？",
+    category: "reframe",
+    options: [
+      { text: "まちがってないと言い張る", score: 1 },
+      { text: "恥ずかしくなって話をやめる", score: 2 },
+      { text: "少し落ち込むけど、受け止める", score: 3 },
+      { text: "教えてくれてありがとうと思う", score: 4 },
+      { text: "考えが変わるのは成長だと思う", score: 5 }
+    ]
+  },
+  {
+    text: "しっぱいしたとき、どうする？",
+    category: "action",
+    options: [
+      { text: "かくしたくなる", score: 1 },
+      { text: "だれかのせいにしたくなる", score: 2 },
+      { text: "あやまって、次に気をつける", score: 3 },
+      { text: "なぜ失敗したかを考えて直す", score: 4 },
+      { text: "同じ失敗をしないしくみを作る", score: 5 }
+    ]
+  },
+  {
+    text: "話しているとき、勝とうとしてることある？",
+    category: "reflection",
+    options: [
+      { text: "いつも勝ちたいと思う", score: 1 },
+      { text: "負けたくなくて強く言うことがある", score: 2 },
+      { text: "あとから勝とうとしていたと気づくことがある", score: 3 },
+      { text: "話している途中で気づいて止まれることがある", score: 4 },
+      { text: "勝つより、わかり合うことを大事にできる", score: 5 }
+    ]
+  },
+  {
+    text: "つよい言い方をしそうなとき、どうする？",
+    category: "dialogue",
+    options: [
+      { text: "そのまま強く言う", score: 1 },
+      { text: "少しきつい言い方になる", score: 2 },
+      { text: "言う前に少し止まる", score: 3 },
+      { text: "やさしい言い方に変える", score: 4 },
+      { text: "相手が受け取りやすい言葉を選ぶ", score: 5 }
+    ]
+  },
+  {
+    text: "気持ちがごちゃごちゃしたとき、どうする？",
+    category: "reflection",
+    options: [
+      { text: "よくわからないまま動く", score: 1 },
+      { text: "モヤモヤしたまま人にぶつける", score: 2 },
+      { text: "少し休んで落ち着こうとする", score: 3 },
+      { text: "紙やメモに書いて整理する", score: 4 },
+      { text: "何が悲しいのか、何が不安なのか分けて考える", score: 5 }
+    ]
+  },
+  {
+    text: "うまく伝わらなかったとき、どうする？",
+    category: "action",
+    options: [
+      { text: "なんでわからないの？と思う", score: 1 },
+      { text: "もういいやと思ってあきらめる", score: 2 },
+      { text: "もう一回だけ説明する", score: 3 },
+      { text: "言い方を変えて伝えてみる", score: 4 },
+      { text: "相手に伝わる言葉を一緒に探す", score: 5 }
+    ]
+  },
+  {
+    text: "ふあんになったとき、どう考える？",
+    category: "reframe",
+    options: [
+      { text: "悪いことばかり考える", score: 1 },
+      { text: "頭の中で同じことをぐるぐる考える", score: 2 },
+      { text: "まず深呼吸して落ち着こうとする", score: 3 },
+      { text: "本当に起きていることと、想像を分ける", score: 4 },
+      { text: "今できる小さな一歩を考える", score: 5 }
+    ]
+  },
+  {
+    text: "世界をよくしたいと思ったとき、どうする？",
+    category: "action",
+    options: [
+      { text: "大きすぎて無理だと思う", score: 1 },
+      { text: "だれかがやってくれたらいいと思う", score: 2 },
+      { text: "自分にできることを少し考える", score: 3 },
+      { text: "近くの人にやさしくすることから始める", score: 4 },
+      { text: "身近な一人との対話を大事にして行動する", score: 5 }
+    ]
+  }
 ];
 
 let current = 0;
-let total = 0;
+let scores = {
+  reflection: 0,
+  dialogue: 0,
+  reframe: 0,
+  action: 0
+};
+
+function showStart() {
+  document.getElementById("app").innerHTML = `
+    <button onclick="start()">はじめる</button>
+  `;
+}
 
 function start() {
+  current = 0;
+  scores = {
+    reflection: 0,
+    dialogue: 0,
+    reframe: 0,
+    action: 0
+  };
   showQuestion();
 }
 
 function showQuestion() {
+  const q = questions[current];
   const progress = (current / questions.length) * 100;
 
   document.getElementById("app").innerHTML = `
     <div class="progress"><div class="bar" style="width:${progress}%"></div></div>
-    <p>${current + 1} / ${questions.length}</p>
-    <h2>${questions[current]}</h2>
-
-    ${options.map(o => `
-      <button onclick="answer(${o.score})">${o.text}</button>
+    <p class="small">質問 ${current + 1} / ${questions.length}</p>
+    <h2>${q.text}</h2>
+    ${q.options.map(option => `
+      <button onclick="answer(${option.score})">${option.text}</button>
     `).join("")}
   `;
 }
 
 function answer(score) {
-  total += score;
+  const category = questions[current].category;
+  scores[category] += score;
   current++;
 
   if (current < questions.length) {
@@ -145,43 +310,71 @@ function answer(score) {
 }
 
 function showResult() {
-  let type = "";
-  let msg = "";
+  const total = scores.reflection + scores.dialogue + scores.reframe + scores.action;
 
-  if (total >= 50) {
-    type = "コンパス型";
-    msg = "よく考えて行動できるタイプ";
-  } else if (total >= 35) {
-    type = "ミラー型";
-    msg = "自分の気持ちに気づけるタイプ";
-  } else if (total >= 25) {
-    type = "ブリッジ型";
-    msg = "人との関係を大事にできるタイプ";
-  } else {
-    type = "スパーク型";
-    msg = "行動力があるタイプ";
+  const names = {
+    reflection: "ミラー型",
+    dialogue: "ブリッジ型",
+    reframe: "コンパス型",
+    action: "スパーク型"
+  };
+
+  const messages = {
+    reflection: "自分の気持ちに気づく力があります。モヤモヤを言葉にできると、もっと強くなれます。",
+    dialogue: "人の話を聞いて、つながろうとする力があります。相手の気持ちを考えられるのが強みです。",
+    reframe: "ものごとを別の見方で考える力があります。失敗や不安も、学びに変えられるタイプです。",
+    action: "気づいたことを行動に変える力があります。小さな一歩をすぐ始められるのが強みです。"
+  };
+
+  const actions = {
+    reflection: "今日の一歩：気持ちが動いたことを、ひとつだけメモしてみよう。",
+    dialogue: "今日の一歩：だれかの話を、さいごまで聞いてみよう。",
+    reframe: "今日の一歩：「ほかの見方はあるかな？」と一回だけ考えてみよう。",
+    action: "今日の一歩：今できる小さな行動をひとつ決めてみよう。"
+  };
+
+  let top = "reflection";
+  for (const key in scores) {
+    if (scores[key] > scores[top]) {
+      top = key;
+    }
   }
 
+  const shareText = encodeURIComponent(
+    `What’s AIQをやってみました。私のタイプは「${names[top]}」でした。問い方が変わると、世界の見え方が変わる。`
+  );
+  const shareUrl = encodeURIComponent(window.location.href);
+
   document.getElementById("app").innerHTML = `
+    <div class="progress"><div class="bar" style="width:100%"></div></div>
+
     <h2>あなたのタイプ</h2>
-    <h3>${type}</h3>
-    <p>${msg}</p>
 
-    <p>今日の一歩</p>
-    <p>だれかの話を、さいごまで聞いてみよう</p>
+    <div class="result-box">
+      <h3>${names[top]}</h3>
+      <p>${messages[top]}</p>
+      <p class="small">合計：${total} / 60</p>
+    </div>
 
-    <button onclick="restart()">もう一回やる</button>
+    <div class="result-box">
+      <h3>4つの力</h3>
+      <p>ミラー力：${scores.reflection} / 15</p>
+      <p>ブリッジ力：${scores.dialogue} / 15</p>
+      <p>コンパス力：${scores.reframe} / 15</p>
+      <p>スパーク力：${scores.action} / 15</p>
+    </div>
+
+    <div class="result-box">
+      <h3>今日の一歩</h3>
+      <p>${actions[top]}</p>
+    </div>
+
+    <button onclick="start()">もう一回やる</button>
+    <button class="secondary" onclick="window.open('https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}', '_blank')">Xでシェアする</button>
   `;
 }
 
-function restart() {
-  current = 0;
-  total = 0;
-  start();
-}
-
-start();
-
+showStart();
 </script>
 </body>
 </html>
