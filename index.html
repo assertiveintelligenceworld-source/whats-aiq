@@ -2,304 +2,186 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>What’s AIQ</title>
+
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: sans-serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(180deg, #f7f7f7, #e9eef5);
+      background: #f4f6fb;
       color: #222;
-      line-height: 1.8;
     }
 
     .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 24px;
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
     }
 
     .card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 28px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-      margin-top: 24px;
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
 
     h1 {
-      font-size: 36px;
-      margin: 0 0 8px;
-      letter-spacing: -0.03em;
+      font-size: 28px;
+      margin-bottom: 10px;
     }
 
     h2 {
-      font-size: 24px;
-      margin-top: 24px;
-    }
-
-    h3 {
-      font-size: 22px;
-      margin-bottom: 8px;
+      font-size: 20px;
+      margin-top: 20px;
     }
 
     p {
-      margin: 10px 0;
+      line-height: 1.7;
     }
 
     .small {
-      color: #666;
       font-size: 14px;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 4px 12px;
-      border-radius: 999px;
-      background: #eef2ff;
-      color: #334155;
-      font-size: 13px;
-      margin-bottom: 12px;
-    }
-
-    .progress {
-      width: 100%;
-      height: 10px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 16px 0 24px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #222;
-      transition: width 0.3s ease;
+      color: #666;
     }
 
     button {
       width: 100%;
-      padding: 15px;
+      padding: 14px;
       margin: 8px 0;
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
+      font-size: 16px;
       background: #222;
       color: white;
-      font-size: 16px;
       cursor: pointer;
     }
 
-    button:hover {
-      opacity: 0.88;
-    }
-
     button.secondary {
-      background: #f1f5f9;
+      background: #eee;
       color: #222;
     }
 
-    .result-box {
-      background: #f8fafc;
-      border-radius: 18px;
-      padding: 18px;
-      margin: 16px 0;
+    .progress {
+      height: 8px;
+      background: #ddd;
+      border-radius: 10px;
+      margin: 10px 0 20px;
     }
 
-    .score {
-      font-size: 14px;
-      color: #666;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: #777;
-      margin: 24px 0;
+    .bar {
+      height: 100%;
+      background: #222;
+      width: 0%;
+      border-radius: 10px;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="card">
-      <span class="tag">5分でできるリフレクション</span>
-      <h1>What’s AIQ</h1>
-      <p>これは、あなたを評価するものではありません。</p>
-      <p>今のあなたの「問い方・受け止め方・対話のクセ」を映す、小さなリフレクションツールです。</p>
-      <p class="small">正解を探すより、自分の問い方に気づくために使ってください。</p>
+<div class="container">
+  <div class="card">
+    <h1>What’s AIQ</h1>
+    <p>これはテストではありません。</p>
+    <p>あなたの「考え方のくせ」を知るためのものです。</p>
 
-      <div id="app"></div>
-    </div>
-
-    <footer>
-      What’s AIQ｜問い方が変わると、世界の見え方が変わる。
-    </footer>
+    <div id="app"></div>
   </div>
+</div>
 
-  <script>
-    const questions = [
-      { text: "自分と違う意見を聞いたとき、すぐ否定せず一度置いて考えられる。", category: "dialogue" },
-      { text: "怒りを感じたとき、「何に傷ついたのか」を考えられる。", category: "reflection" },
-      { text: "相手の言葉の裏にある不安や願いを想像できる。", category: "dialogue" },
-      { text: "正しいか間違いかだけでなく、第三の見方を探せる。", category: "reframe" },
-      { text: "自分の考えが変わることを、負けだと思わない。", category: "reframe" },
-      { text: "失敗したとき、人格ではなく仕組みを見直そうとする。", category: "action" },
-      { text: "会話の目的が「勝つこと」になっていないか気づける。", category: "reflection" },
-      { text: "強い言葉を使う前に、少し言い換えられる。", category: "dialogue" },
-      { text: "自分の中の矛盾を、すぐ消さずに観察できる。", category: "reflection" },
-      { text: "相手を変える前に、自分の伝え方を変えられる。", category: "action" },
-      { text: "不安なときほど、事実と解釈を分けようとする。", category: "reframe" },
-      { text: "世界をよくするために、まず身近な一人との対話を大事にできる。", category: "action" }
-    ];
+<script>
 
-    const answers = [
-      { text: "かなり当てはまる", score: 5 },
-      { text: "少し当てはまる", score: 4 },
-      { text: "どちらともいえない", score: 3 },
-      { text: "あまり当てはまらない", score: 2 },
-      { text: "当てはまらない", score: 1 }
-    ];
+const questions = [
+  "ともだちと意見がちがったとき、どうする？",
+  "イライラしたとき、どうしてる？",
+  "ともだちがきついことを言ったとき、どう思う？",
+  "うまくいかなかったとき、どう考える？",
+  "自分の考えがまちがっていたと気づいたら？",
+  "しっぱいしたとき、どうする？",
+  "話しているとき、勝とうとしてることある？",
+  "つよい言い方をしそうなとき、どうする？",
+  "気持ちがごちゃごちゃしたとき、どうする？",
+  "うまく伝わらなかったとき、どうする？",
+  "ふあんになったとき、どう考える？",
+  "世界をよくしたいと思ったとき、どうする？"
+];
 
-    let currentQuestion = 0;
-    let scores = {
-      reflection: 0,
-      dialogue: 0,
-      reframe: 0,
-      action: 0
-    };
+const options = [
+  { text: "すぐ言い返す", score: 1 },
+  { text: "ちょっと考える", score: 3 },
+  { text: "相手の話をちゃんと聞く", score: 5 }
+];
 
-    function showStart() {
-      const app = document.getElementById("app");
-      app.innerHTML = `
-        <button onclick="startApp()">はじめる</button>
-      `;
-    }
+let current = 0;
+let total = 0;
 
-    function startApp() {
-      currentQuestion = 0;
-      scores = {
-        reflection: 0,
-        dialogue: 0,
-        reframe: 0,
-        action: 0
-      };
-      showQuestion();
-    }
+function start() {
+  showQuestion();
+}
 
-    function showQuestion() {
-      const app = document.getElementById("app");
-      const question = questions[currentQuestion];
-      const progress = ((currentQuestion) / questions.length) * 100;
+function showQuestion() {
+  const progress = (current / questions.length) * 100;
 
-      app.innerHTML = `
-        <p class="small">質問 ${currentQuestion + 1} / ${questions.length}</p>
-        <div class="progress">
-          <div class="progress-bar" style="width: ${progress}%"></div>
-        </div>
-        <h2>Q${currentQuestion + 1}</h2>
-        <p>${question.text}</p>
-        ${answers.map(answer => `
-          <button onclick="answerQuestion(${answer.score})">${answer.text}</button>
-        `).join("")}
-      `;
-    }
+  document.getElementById("app").innerHTML = `
+    <div class="progress"><div class="bar" style="width:${progress}%"></div></div>
+    <p>${current + 1} / ${questions.length}</p>
+    <h2>${questions[current]}</h2>
 
-    function answerQuestion(score) {
-      const category = questions[currentQuestion].category;
-      scores[category] += score;
-      currentQuestion++;
+    ${options.map(o => `
+      <button onclick="answer(${o.score})">${o.text}</button>
+    `).join("")}
+  `;
+}
 
-      if (currentQuestion < questions.length) {
-        showQuestion();
-      } else {
-        showResult();
-      }
-    }
+function answer(score) {
+  total += score;
+  current++;
 
-    function showResult() {
-      const app = document.getElementById("app");
+  if (current < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
 
-      const totalScore = scores.reflection + scores.dialogue + scores.reframe + scores.action;
+function showResult() {
+  let type = "";
+  let msg = "";
 
-      const categoryNames = {
-        reflection: "ミラー型",
-        dialogue: "ブリッジ型",
-        reframe: "コンパス型",
-        action: "スパーク型"
-      };
+  if (total >= 50) {
+    type = "コンパス型";
+    msg = "よく考えて行動できるタイプ";
+  } else if (total >= 35) {
+    type = "ミラー型";
+    msg = "自分の気持ちに気づけるタイプ";
+  } else if (total >= 25) {
+    type = "ブリッジ型";
+    msg = "人との関係を大事にできるタイプ";
+  } else {
+    type = "スパーク型";
+    msg = "行動力があるタイプ";
+  }
 
-      const messages = {
-        reflection: "あなたは、自分の内面を見つめる力があります。感情や違和感を観察することで、問いの質が深まります。",
-        dialogue: "あなたは、人と人の間に橋をかける力があります。相手の背景を想像することで、対話がやわらかくなります。",
-        reframe: "あなたは、別の見方を探す力があります。正解を急がず、第三の視点を探せることが強みです。",
-        action: "あなたは、気づきを行動に変える力があります。勢いがあるぶん、一呼吸置くとさらに伝わりやすくなります。"
-      };
+  document.getElementById("app").innerHTML = `
+    <h2>あなたのタイプ</h2>
+    <h3>${type}</h3>
+    <p>${msg}</p>
 
-      const actions = {
-        reflection: "今日の一歩：感情が動いた場面をひとつだけメモしてみましょう。",
-        dialogue: "今日の一歩：誰かの話を、最後までさえぎらずに聞いてみましょう。",
-        reframe: "今日の一歩：反対意見をひとつだけ、相手の立場から想像してみましょう。",
-        action: "今日の一歩：正しさより、伝わり方をひとつだけ意識してみましょう。"
-      };
+    <p>今日の一歩</p>
+    <p>だれかの話を、さいごまで聞いてみよう</p>
 
-      let topCategory = "reflection";
-      for (const category in scores) {
-        if (scores[category] > scores[topCategory]) {
-          topCategory = category;
-        }
-      }
+    <button onclick="restart()">もう一回やる</button>
+  `;
+}
 
-      const type = categoryNames[topCategory];
-      const message = messages[topCategory];
-      const action = actions[topCategory];
+function restart() {
+  current = 0;
+  total = 0;
+  start();
+}
 
-      const shareText = encodeURIComponent(
-        `What’s AIQをやってみました。私のAIQタイプは「${type}」でした。問い方が変わると、世界の見え方が変わる。`
-      );
+start();
 
-      app.innerHTML = `
-        <div class="progress">
-          <div class="progress-bar" style="width: 100%"></div>
-        </div>
-
-        <h2>あなたのAIQタイプ</h2>
-
-        <div class="result-box">
-          <h3>${type}</h3>
-          <p>${message}</p>
-          <p class="score">合計スコア：${totalScore} / 60</p>
-        </div>
-
-        <div class="result-box">
-          <h3>4つの力</h3>
-          <p>内省力：${scores.reflection} / 15</p>
-          <p>対話力：${scores.dialogue} / 15</p>
-          <p>転換力：${scores.reframe} / 15</p>
-          <p>実行力：${scores.action} / 15</p>
-        </div>
-
-        <div class="result-box">
-          <h3>今日の一歩</h3>
-          <p>${action}</p>
-        </div>
-
-        <button onclick="restart()">もう一度やる</button>
-        <button class="secondary" onclick="shareOnX('${shareText}')">Xでシェアする</button>
-      `;
-    }
-
-    function restart() {
-      showStart();
-    }
-
-    function shareOnX(text) {
-      const url = encodeURIComponent(window.location.href);
-      window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, "_blank");
-    }
-
-    showStart();
-  </script>
+</script>
 </body>
 </html>
